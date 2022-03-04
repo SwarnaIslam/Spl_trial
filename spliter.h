@@ -1,6 +1,7 @@
 #ifndef SPLITER_H
 #define SPLITER_H
 #include<vector>
+#include"definition.h"
 using namespace std;
 int size=0;
 void commaRemove(char *untrimmedInstruction){
@@ -48,12 +49,14 @@ vector<string>split(char unTrimmedInstruction[],int s,int instructionLine){
             }
         }
     }
-    if(newLine)trimmedInstruction.push_back("");
+    if(newLine){
+        trimmedInstruction.push_back("");
+    }
     return trimmedInstruction;
 }
-void trim(vector<string>instruction,int &numberOfInstruction,vector<string>*trimmedInstruction){
-	int insNumber=0;
-	for(int i=0;i<numberOfInstruction;i++){
+void trim(vector<string>instruction,vector<string>trimmedInstruction[],int instructionNumber){
+    int insNumber=0;
+	for(int i=0;i<instructionNumber;i++){
 		int InsLength=instruction[i].length()+1;
 		char tempIns[InsLength];
 		for(int j=0;j<InsLength;j++){
