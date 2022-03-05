@@ -1,5 +1,6 @@
 #ifndef EXECUTION_H
 #define EXECUTION_H
+#include"operator.h"
 vector<string>trimmedInstruction[1000];
 vector<string>instruction;
 void getInstruction(string pathName){
@@ -27,6 +28,6 @@ void startExecution(string pathName){
     define(trimmedInstruction,instruction.size());
 	//cout<<"success3"<<endl;
 	getLabel(trimmedInstruction);
-	
+	executeInstruction(trimmedInstruction);
 }
 #endif

@@ -10,17 +10,20 @@ void checkValidInteger(string tempNumber){
 		}
 		if(tempNumber[i]<'0'||tempNumber[i]>'9')
 		{
-			reportAndExit("Error: Specified value is not a number");
+			reportAndExit("Specified value is not a number");
 		}
 	}
 	if(tempNumber[0]!='-'&&(tempNumber.size()>10||(tempNumber.size()==10 &&tempNumber>"2147483647")))
 	{
-		reportAndExit("Error: Number out of range");
+		reportAndExit("Number out of range. Positive number shouble be less than 2147483648");
 	}
 	else if(tempNumber[0]=='-' && (tempNumber.size()>11||(tempNumber.size()==11 && tempNumber>"-2147483648"))) //same check as above for negative integers
 	{
-		reportAndExit("Error: Number out of range");
+		reportAndExit("Number out of range. Negative number should be greater than or equal to -2147483648");
 	}
+}
+bool isValidOperator(string tempOp){
+    
 }
 bool isValidKeyword(string token){
     vector<string>tempOperations=getKeywords();
@@ -40,8 +43,8 @@ bool isValidLabel(string token){
             }
         }
         else{
-            if(token[i]<65||(token[i]>90&&token[i]<97&&token[i]!='_')||token[i]>121){
-                return false;
+            if((token[i]>47&&token[i]<57)||(token[i]>64&&token[i]<91)||(token[i]>96&&token[i]<123)){
+                return true;
             }
         }
     }

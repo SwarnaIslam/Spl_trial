@@ -47,7 +47,7 @@ void findDataLabel(vector<string>trimmedInstruction[],int dataStart, int textSta
             }
         }
         if(labelFlag==false){
-            reportAndExit("Unknown operation e",instructionLine);
+            reportAndExit("Unknown operation",instructionLine);
         }
         string tempLabel="";
         string afterLabel=trimmedInstruction[i][j].substr(labelFound+1);
@@ -64,7 +64,7 @@ void findDataLabel(vector<string>trimmedInstruction[],int dataStart, int textSta
             reportAndExit("Wrong format of label",instructionLine);
         }
         else if(hasOccurred[tempLabel]>0){
-            reportAndExit("Label "+tempLabel+" was defined before",instructionLine);
+            reportAndExit("Label "+tempLabel+" was defined before",to_string(hasOccurred[tempLabel]));
         }
         else if(afterLabel!=".word"&&afterLabel!=""){
             reportAndExit("Invalid token after ':'",instructionLine);
@@ -147,7 +147,7 @@ void findTextLabel(vector<string>trimmedInstruction[],int dataStart, int textSta
             reportAndExit("Wrong format of label",instructionLine);
         }
         else if(hasOccurred[tempLabel]>0){
-            reportAndExit("Label '"+tempLabel+"' was defined before",instructionLine);
+            reportAndExit("Label '"+tempLabel+"' was defined before",to_string(hasOccurred[tempLabel]));
         }
         else if(afterLabel!=""){
             reportAndExit("No instruction is expected after label name",instructionLine);
