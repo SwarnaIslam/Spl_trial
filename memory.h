@@ -2,7 +2,6 @@
 #define MEMORY_H
 #include"debugger.h"
 #include"format.h"
-int instructionNumber=getNumberOfInstruction();
 string getNumber(vector<string>dataLabel,int labelIndex,string instructionLine){
     int i=0;
     int size=dataLabel.size();
@@ -15,10 +14,11 @@ string getNumber(vector<string>dataLabel,int labelIndex,string instructionLine){
     }
     return dataLabel[size-1];
 }
-void getDataLabel(vector<string>trimmedInstruction[],int dataStart, int textStart){
+void findDataLabel(vector<string>trimmedInstruction[],int dataStart, int textStart){
+    int instructionNumber=getNumberOfInstruction();
     int dataEnd=0;
     string instructionLine="";
-    map<string,bool>hasOccurred;
+    map<string,int>hasOccurred;
     if(dataStart>textStart){
         dataEnd=instructionNumber;
     }
@@ -63,7 +63,7 @@ void getDataLabel(vector<string>trimmedInstruction[],int dataStart, int textStar
         if(j==1&&labelFound!=0){
             reportAndExit("Wrong format of label",instructionLine);
         }
-        else if(hasOccurred[tempLabel]){
+        else if(hasOccurred[tempLabel]>0){
             reportAndExit("Label "+tempLabel+" was defined before",instructionLine);
         }
         else if(afterLabel!=".word"&&afterLabel!=""){
@@ -73,7 +73,8 @@ void getDataLabel(vector<string>trimmedInstruction[],int dataStart, int textStar
             reportAndExit("Wrong format of label",instructionLine);
         }
         else{
-            hasOccurred[tempLabel]=true;
+            hasOccurred[tempLabel]=i+1;
+            setDataLabel(tempLabel,i+1);
         }
         string tempNumber="";
         if(afterLabel==".word"){
@@ -85,16 +86,19 @@ void getDataLabel(vector<string>trimmedInstruction[],int dataStart, int textStar
         else{
             reportAndExit("Expected .word after ':'",instructionLine);
         }
-        cout<<tempNumber<<endl;
+        //cout<<tempNumber<<endl;
         checkValidInteger(tempNumber);
     }
 }
-void getTextLabel(vector<string>trimmedInstruction[],int dataStart, int textStart){
+void findTextLabel(vector<string>trimmedInstruction[],int dataStart, int textStart){
+    int instructionNumber=getNumberOfInstruction();
     int textEnd=0;
     string instructionLine="";
-    map<string,bool>hasOccurred;
+    map<string,int>hasOccurred=getDataLabel();
+    //cout<<dataStart<<" "<<endl;
     if(dataStart<textStart){
         textEnd=instructionNumber;
+        //cout<<instructionNumber<<" "<<getNumberOfInstruction()<<endl;
     }
     else{
         if(dataStart==textStart+1){
@@ -105,6 +109,7 @@ void getTextLabel(vector<string>trimmedInstruction[],int dataStart, int textStar
         }
     }
     for(int i=textStart+1;i<textEnd;i++){
+        //cout<<"Entered loop"<<endl;
         instructionLine=to_string(i+1);
         int labelFound=-1,j;
         int size=trimmedInstruction[i].size();
@@ -137,11 +142,12 @@ void getTextLabel(vector<string>trimmedInstruction[],int dataStart, int textStar
         else{
             reportAndExit("Wrong format of label",instructionLine);
         }
+        //cout<<tempLabel<<" "<<hasOccurred[tempLabel]<<endl;
         if(j==1&&labelFound!=0){
             reportAndExit("Wrong format of label",instructionLine);
         }
-        else if(hasOccurred[tempLabel]){
-            reportAndExit("Label "+tempLabel+" was defined before",instructionLine);
+        else if(hasOccurred[tempLabel]>0){
+            reportAndExit("Label '"+tempLabel+"' was defined before",instructionLine);
         }
         else if(afterLabel!=""){
             reportAndExit("No instruction is expected after label name",instructionLine);
@@ -150,14 +156,15 @@ void getTextLabel(vector<string>trimmedInstruction[],int dataStart, int textStar
             reportAndExit("Wrong format of label",instructionLine);
         }
         else{
-            hasOccurred[tempLabel]=true;
+            hasOccurred[tempLabel]=i+1;
+            setTextLabel(tempLabel,i+1);
         }  
     }
 }
 void getLabel(vector<string>trimmedInstruction[]){
     int dataStart=getDataIndex();
     int textStart=getTextIndex();
-    getDataLabel(trimmedInstruction,dataStart,textStart);
-    getTextLabel(trimmedInstruction,dataStart,textStart);
+    findDataLabel(trimmedInstruction,dataStart,textStart);
+    findTextLabel(trimmedInstruction,dataStart,textStart);
 }
 #endif

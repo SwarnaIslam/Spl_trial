@@ -27,5 +27,6 @@ void startExecution(string pathName){
     define(trimmedInstruction,instruction.size());
 	//cout<<"success3"<<endl;
 	getLabel(trimmedInstruction);
+	
 }
 #endif

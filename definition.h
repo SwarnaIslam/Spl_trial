@@ -3,23 +3,37 @@
 #include<vector>
 #include"debugger.h"
 using namespace std;
-vector<string>operations;
-vector<string>registers;
 int numberOfInstruction;
 int dataIndex,textIndex;
-void defineOperations(){
-    vector<string>tempOperations{"li","la","add","addi","mul","div","j","jal","bne","beq","move","syscall",".data",".text",".word"};
-    for(int i=0;i<tempOperations.size();i++){
-        operations.push_back(tempOperations[i]);
+vector<string>keywords;
+vector<string>registers;
+map<string,int>dataLabel;
+map<string,int>textLabel;
+void setDataLabel(string labelName,int line){
+    dataLabel[labelName]=line;
+}
+void setTextLabel(string labelName,int line){
+    textLabel[labelName]=line;
+}
+map<string,int>getDataLabel(){
+    return dataLabel;
+}
+map<string,int>getTextLabel(){
+    return textLabel;
+}
+void defineKeywords(){
+    vector<string>tempKeywords{"li","la","add","addi","mul","div","j","jal","bne","beq","move","syscall",".data",".text",".word"};
+    for(int i=0;i<tempKeywords.size();i++){
+        keywords.push_back(tempKeywords[i]);
     }
 }
-vector<string> getOperations(){
-    return operations;
+vector<string> getKeywords(){
+    return keywords;
 }
 void defineRegisters(){
     vector<string>tempRegister{"$zero","$at","$v0","$v1","$a0","$a1","$a2","$a3","$t0","$t1","$t2","$t3","$t4","$t5","$t6","$t7","$s0","$s1","$s2","$s3","$s4","$s5","$s6","$s7","$t8","$t9","$k0","$k1","$gp","$sp","$fp","$ra"};
     for(int i=0;i<tempRegister.size();i++){
-        operations.push_back(tempRegister[i]);
+        keywords.push_back(tempRegister[i]);
     }
 }
 vector<string> getRegisters(){
@@ -84,7 +98,7 @@ int getTextIndex(){
     return textIndex;
 }
 void define(vector<string>trimmedInstruction[],int lineOfCode){
-    defineOperations();
+    defineKeywords();
     //cout<<"success defining op"<<endl;
 	defineRegisters();
     //cout<<"success defining reg"<<endl;

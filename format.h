@@ -1,5 +1,6 @@
 #ifndef FORMAT_H
 #define FORMAT_H
+
 void checkValidInteger(string tempNumber){
     for(int32_t i=0;i<tempNumber.size();i++) //check that each character is a digit
 	{
@@ -16,13 +17,13 @@ void checkValidInteger(string tempNumber){
 	{
 		reportAndExit("Error: Number out of range");
 	}
-	else if(tempNumber[0]=='-' && (tempNumber.size()>11 || (tempNumber.size()==11 && tempNumber>"-2147483648"))) //same check as above for negative integers
+	else if(tempNumber[0]=='-' && (tempNumber.size()>11||(tempNumber.size()==11 && tempNumber>"-2147483648"))) //same check as above for negative integers
 	{
 		reportAndExit("Error: Number out of range");
 	}
 }
-bool isValidOperation(string token){
-    vector<string>tempOperations=getOperations();
+bool isValidKeyword(string token){
+    vector<string>tempOperations=getKeywords();
     for(int i=0;i<tempOperations.size();i++){
         if(tempOperations[i]==token){
             return true;
@@ -31,7 +32,7 @@ bool isValidOperation(string token){
     return false;
 }
 bool isValidLabel(string token){
-    if(isValidOperation(token))return false;
+    if(isValidKeyword(token))return false;
     for(int i=0;i<token.length();i++){
         if(i==0){
             if(token[0]<65||(token[0]>90&&token[0]<97)||token[0]>121){
