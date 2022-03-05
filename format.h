@@ -1,5 +1,26 @@
 #ifndef FORMAT_H
 #define FORMAT_H
+void checkValidInteger(string tempNumber){
+    for(int32_t i=0;i<tempNumber.size();i++) //check that each character is a digit
+	{
+		if(tempNumber[i]=='-'&&i==0) //ignore minus sign
+		{
+			continue;
+		}
+		if(tempNumber[i]<'0'||tempNumber[i]>'9')
+		{
+			reportAndExit("Error: Specified value is not a number");
+		}
+	}
+	if(tempNumber[0]!='-'&&(tempNumber.size()>10||(tempNumber.size()==10 &&tempNumber>"2147483647")))
+	{
+		reportAndExit("Error: Number out of range");
+	}
+	else if(tempNumber[0]=='-' && (tempNumber.size()>11 || (tempNumber.size()==11 && tempNumber>"-2147483648"))) //same check as above for negative integers
+	{
+		reportAndExit("Error: Number out of range");
+	}
+}
 bool isValidOperation(string token){
     vector<string>tempOperations=getOperations();
     for(int i=0;i<tempOperations.size();i++){

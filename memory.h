@@ -3,6 +3,18 @@
 #include"debugger.h"
 #include"format.h"
 int instructionNumber=getNumberOfInstruction();
+string getNumber(vector<string>dataLabel,int labelIndex,string instructionLine){
+    int i=0;
+    int size=dataLabel.size();
+    bool tokenFound=false;
+    for(i=labelIndex;i<size;i++){
+        if(tokenFound==true){
+            reportAndExit("Found more than one token after .word",instructionLine);
+        }
+        tokenFound=true;
+    }
+    return dataLabel[size-1];
+}
 void getDataLabel(vector<string>trimmedInstruction[],int dataStart, int textStart){
     int dataEnd=0;
     string instructionLine="";
@@ -62,7 +74,19 @@ void getDataLabel(vector<string>trimmedInstruction[],int dataStart, int textStar
         }
         else{
             hasOccurred[tempLabel]=true;
-        }  
+        }
+        string tempNumber="";
+        if(afterLabel==".word"){
+            tempNumber=getNumber(trimmedInstruction[i],j+1,instructionLine);
+        }
+        else if(trimmedInstruction[i][j+1]==".word"){
+            tempNumber=getNumber(trimmedInstruction[i],j+2,instructionLine);
+        }
+        else{
+            reportAndExit("Expected .word after ':'",instructionLine);
+        }
+        cout<<tempNumber<<endl;
+        checkValidInteger(tempNumber);
     }
 }
 void getTextLabel(vector<string>trimmedInstruction[],int dataStart, int textStart){
